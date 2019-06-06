@@ -1,0 +1,34 @@
+{
+  "name": "web",
+  "version": "0.0.0",
+  "dependencies": {
+    "rps": "file:../rps",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "watchify": "latest",
+    "babelify": "latest",
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "@babel/preset-react": "latest",
+    "jasmine": "latest"
+  },
+  "scripts": {
+    "compile-app": "watchify src/*.js -o bundled/compiledApp.js -t [ babelify ]",
+    "compile-test": "watchify spec/*Spec.js -o bundled/compiledWebSpec.js -t [ babelify ]"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+          ]
+        }
+      ]
+    ]
+  }
+}

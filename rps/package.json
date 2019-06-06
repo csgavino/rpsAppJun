@@ -1,0 +1,30 @@
+{
+  "name": "rps",
+  "version": "0.0.0",
+  "main": "src/rps.js",
+  "files": [
+    "src/"
+  ],
+  "devDependencies": {
+    "babelify": "latest",
+    "@babel/node": "latest",
+    "@babel/core": "latest",
+    "@babel/preset-env": "latest",
+    "jasmine": "latest"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/jasmine $@ --config=spec/support/jasmine.json"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ]
+        }
+      ]
+    ]
+  }
+}
