@@ -8,18 +8,58 @@ export default class PlayForm extends React.Component {
         }
     }
 
-    onClickSubmit() {
+    invalid() {
         this.setState({
-            result: "NOT IMPLEMENTED"
+            result: 'Invalid Input'
         })
+    }
+
+    p1Wins() {
+        this.setState({
+            result: 'Player 1 Wins!'
+        })
+    }
+
+    p2Wins() {
+        this.setState({
+            result: 'Player 2 Wins!'
+        })
+    }
+
+    tie() {
+        this.setState({
+            result: 'Draw!'
+        })
+    }
+
+    onClickSubmit() {
+        this.props.request.play(
+            this.state.player1Input,
+            this.state.player2Input,
+            this)
+    }
+
+    onChangePlayer1Input(event) {
+        this.setState({
+            player1Input: event.target.value
+        });
+    }
+
+    onChangePlayer2Input(event) {
+        this.setState({
+            player2Input: event.target.value
+        });
     }
 
     render() {
         return (
             <div>
                 <h1>RPS App</h1>
-                <input name='player1' />
-                <input name='player2' />
+
+                <input name='player1'
+                       onChange={this.onChangePlayer1Input.bind(this)}/>
+                <input name='player2'
+                       onChange={this.onChangePlayer2Input.bind(this)}/>
                 <button onClick={this.onClickSubmit.bind(this)}>登録</button>
                 <div>{this.state.result}</div>
             </div>
