@@ -95,15 +95,15 @@ describe('play function', () => {
         it('null v.s. invalid', () => {
             const observer = jasmine.createSpyObj("observer", ["invalid"]);
 
-            request.play(null, "invalid", observer)
+            request.play(null, Math.random(), observer)
 
             expect(observer.invalid).toHaveBeenCalled();
         })
 
-        it('null v.s. invalid', () => {
+        it('invalid v.s. null', () => {
             const observer = jasmine.createSpyObj("observer", ["invalid"]);
 
-            request.play(null, "invalid", observer)
+            request.play(Math.random(), null, observer)
 
             expect(observer.invalid).toHaveBeenCalled();
         })
@@ -111,7 +111,7 @@ describe('play function', () => {
         it('invalid v.s. invalid', () => {
             const observer = jasmine.createSpyObj("observer", ["invalid"]);
 
-            request.play("invalid", "invalid", observer)
+            request.play(Math.random(), Math.random(), observer)
 
             expect(observer.invalid).toHaveBeenCalled();
         })
