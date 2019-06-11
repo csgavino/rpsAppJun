@@ -79,4 +79,14 @@ describe('play function', () => {
             expect(observer.draw).toHaveBeenCalled();
         })
     })
+
+    describe('invalid scenarios', () => {
+        it('null v.s. null', () => {
+            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+
+            new Request().play(null, null, observer)
+
+            expect(observer.invalid).toHaveBeenCalled();
+        })
+    })
 })

@@ -3,9 +3,16 @@ const THROW = {
     PAPER: 'paper',
     SCISSORS: 'scissors'
 }
+const THROWS = [THROW.ROCK, THROW.PAPER, THROW.SCISSORS]
 
 class Request {
     play(p1, p2, observer) {
+        if (THROWS.includes(p1) === false ||
+            THROWS.includes(p2) === false) {
+            observer.invalid()
+            return
+        }
+
         if (p1 === p2) {
             observer.draw()
             return
