@@ -91,5 +91,29 @@ describe('play function', () => {
 
             expect(observer.invalid).toHaveBeenCalled();
         })
+
+        it('null v.s. invalid', () => {
+            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+
+            request.play(null, "invalid", observer)
+
+            expect(observer.invalid).toHaveBeenCalled();
+        })
+
+        it('null v.s. invalid', () => {
+            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+
+            request.play(null, "invalid", observer)
+
+            expect(observer.invalid).toHaveBeenCalled();
+        })
+
+        it('invalid v.s. invalid', () => {
+            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+
+            request.play("invalid", "invalid", observer)
+
+            expect(observer.invalid).toHaveBeenCalled();
+        })
     })
 })
