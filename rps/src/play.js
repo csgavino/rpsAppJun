@@ -5,15 +5,24 @@ const THROW = {
 }
 const THROWS = [THROW.ROCK, THROW.PAPER, THROW.SCISSORS]
 
-function PlayRequest(p1, p2, observer) {
+const RESULT = {
+    P1WINS: 'p1Wins',
+    P2WINS: 'p2Wins',
+    DRAW: 'draw'
+}
+
+function PlayRequest(p1, p2, observer, repo) {
     this.process = () => {
         if (anyThrowInvalid()) {
             observer.invalid()
         } else if (isDraw()) {
+            repo.save(new Round(p1, p2, RESULT.DRAW))
             observer.draw()
         } else if (p1Wins()) {
+            repo.save(new Round(p1, p2, RESULT.P1WINS))
             observer.p1Wins()
         } else {
+            repo.save(new Round(p1, p2, RESULT.P2WINS))
             observer.p2Wins()
         }
 
@@ -35,8 +44,12 @@ function PlayRequest(p1, p2, observer) {
 }
 
 class Request {
+    constructor(repo) {
+        this.repo = repo
+    }
+
     play(p1, p2, observer) {
-        new PlayRequest(p1, p2, observer).process()
+        new PlayRequest(p1, p2, observer, this.repo).process()
     }
 }
 
@@ -48,4 +61,4 @@ class Round {
     }
 }
 
-module.exports = {Request, THROW, Round}
+module.exports = {Request, THROW, Round, RESULT}
