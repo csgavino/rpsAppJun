@@ -78,7 +78,7 @@ describe('WebSpec', function () {
             it('displays Draw', () => {
                 const requestStub = {
                     play: (p1, p2, observer) => {
-                        observer.tie()
+                        observer.draw()
                     }
                 }
 

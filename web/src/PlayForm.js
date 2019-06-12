@@ -36,7 +36,7 @@ export default class PlayForm extends React.Component {
         })
     }
 
-    tie() {
+    draw() {
         this.setState({
             result: 'Draw!'
         })
