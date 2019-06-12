@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom'
 import React from 'react'
 import PlayForm from '../src/PlayForm'
+import {Round} from '../../rps/src/play'
 import ReactTestUtils from 'react-dom/test-utils'
 
 describe('WebSpec', function () {
@@ -16,7 +17,7 @@ describe('WebSpec', function () {
     })
 
     describe('PlayForm', () => {
-        describe("playing a round", () => {
+        describe('playing a round', () => {
             it('displays Invalid Input when input is invalid', () => {
                 const requestStub = {
                     play: (p1, p2, observer) => {
@@ -128,51 +129,82 @@ describe('WebSpec', function () {
             })
         })
 
-        describe("history", () => {
-            it("calls request get method when history button clicked", () => {
-                let requestSpy = jasmine.createSpyObj('request', ['getHistory']);
+        describe('history', () => {
+            describe('getting history', () => {
+                it('calls request get method when history button clicked', () => {
+                    let requestSpy = jasmine.createSpyObj('request', ['getHistory']);
 
 
-                ReactDOM.render(
-                    <PlayForm request={requestSpy}/>,
-                    domFixture
-                );
-                document
-                    .querySelector('button[name="history"]')
-                    .click();
+                    ReactDOM.render(
+                        <PlayForm request={requestSpy}/>,
+                        domFixture
+                    );
+                    document
+                        .querySelector('button[name="history"]')
+                        .click();
 
 
-                expect(requestSpy.getHistory).toHaveBeenCalledWith(jasmine.any(Object))
-            });
+                    expect(requestSpy.getHistory).toHaveBeenCalledWith(jasmine.any(Object))
+                });
 
 
-            it("no message is displayed before history button is clicked", () => {
-                ReactDOM.render(<PlayForm />, domFixture);
+                it('no message is displayed before history button is clicked', () => {
+                    ReactDOM.render(<PlayForm/>, domFixture);
 
 
-                expect(domFixture.innerText).not.toContain('No Rounds')
-            });
+                    expect(domFixture.innerText).not.toContain('No Rounds')
+                });
+            })
 
-
-            it("no rounds is displayed when no rounds played", () => {
-                const requestStub = {
-                    getHistory: (observer) => {
-                        observer.noRounds()
+            describe('without rounds', () => {
+                it('no rounds is displayed when no rounds played', () => {
+                    const requestStub = {
+                        getHistory: (observer) => {
+                            observer.noRounds()
+                        }
                     }
-                }
 
 
-                ReactDOM.render(
-                    <PlayForm request={requestStub}/>,
-                    domFixture
-                );
-                document
-                    .querySelector('button[name="history"]')
-                    .click();
+                    ReactDOM.render(
+                        <PlayForm request={requestStub}/>,
+                        domFixture
+                    );
+                    document
+                        .querySelector('button[name="history"]')
+                        .click();
 
 
-                expect(domFixture.innerText).toContain('no rounds played')
+                    expect(domFixture.innerText).toContain('no rounds played')
+                });
             });
+
+            describe('with rounds', () => {
+                it('when rounds have been played display rounds', () => {
+                    const requestStub = {
+                        getHistory: (observer) => {
+                            observer.rounds([
+                                new Round('rock', 'paper', 'p2Wins'),
+                                new Round('scissors', 'paper', 'p1Wins'),
+                                new Round('paper', 'paper', 'draw'),
+                            ])
+                        }
+                    }
+
+
+                    ReactDOM.render(
+                        <PlayForm request={requestStub}/>,
+                        domFixture
+                    );
+                    document
+                        .querySelector('button[name="history"]')
+                        .click();
+
+
+                    expect(domFixture.innerText).toContain('Rock Paper Player 2 Wins')
+                    expect(domFixture.innerText).toContain('Scissors Paper Player 1 Wins')
+                    expect(domFixture.innerText).toContain('Paper Paper Draw')
+                })
+            })
         })
     })
 })

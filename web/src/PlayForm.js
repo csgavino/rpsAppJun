@@ -1,5 +1,14 @@
 import React from 'react'
 
+const MESSAGES = {
+    'rock': 'Rock',
+    'paper': 'Paper',
+    'scissors': 'Scissors',
+    'p1Wins': 'Player 1 Wins',
+    'p2Wins': 'Player 2 Wins',
+    'draw': 'Draw',
+}
+
 export default class PlayForm extends React.Component {
     constructor(props) {
         super(props)
@@ -60,14 +69,24 @@ export default class PlayForm extends React.Component {
         this.setState({rounds: []})
     }
 
+    rounds(rounds) {
+        this.setState({rounds})
+    }
+
     displayRounds() {
         if (this.state.rounds === null) {
             return
         }
 
-        if(this.state.rounds.length === 0) {
+        if (this.state.rounds.length === 0) {
             return <p>no rounds played</p>
         }
+
+        return this.state.rounds.map((round, index) => (
+            <div key={index}>
+                <p>{MESSAGES[round.p1]} {MESSAGES[round.p2]} {MESSAGES[round.result]}</p>
+            </div>
+        ))
     }
 
     render() {
