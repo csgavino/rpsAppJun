@@ -51,6 +51,14 @@ class Request {
     play(p1, p2, observer) {
         new PlayRequest(p1, p2, observer, this.repo).process()
     }
+
+    getHistory(observer) {
+        if(this.repo.isEmpty()) {
+            observer.noRounds()
+        } else {
+            observer.rounds(this.repo.get())
+        }
+    }
 }
 
 class Round {

@@ -3,38 +3,75 @@ const {Request, THROW, Round, RESULT} = require('../src/play')
 describe('play function', () => {
     let request;
 
-    describe("save scenarios", () => {
+    describe('save scenarios', () => {
         let repoSpy = jasmine.createSpyObj('repo', ['save'])
         beforeEach(() => {
             request = new Request(repoSpy);
         })
 
-        it("saves when p1 wins", () => {
-            request.play(THROW.ROCK, THROW.SCISSORS, {p1Wins: () => {}})
+        it('saves when p1 wins', () => {
+            request.play(THROW.ROCK, THROW.SCISSORS, {
+                p1Wins: () => {
+                }
+            })
 
             expect(repoSpy.save).toHaveBeenCalledWith(new Round(THROW.ROCK, THROW.SCISSORS, RESULT.P1WINS));
         })
 
-        it("saves when p2 wins", () => {
-            request.play(THROW.SCISSORS, THROW.ROCK, {p2Wins: () => {}})
+        it('saves when p2 wins', () => {
+            request.play(THROW.SCISSORS, THROW.ROCK, {
+                p2Wins: () => {
+                }
+            })
 
             expect(repoSpy.save).toHaveBeenCalledWith(new Round(THROW.SCISSORS, THROW.ROCK, RESULT.P2WINS));
         })
 
-        it("saves when draw", () => {
-            request.play(THROW.ROCK, THROW.ROCK, {draw: () => {}})
+        it('saves when draw', () => {
+            request.play(THROW.ROCK, THROW.ROCK, {
+                draw: () => {
+                }
+            })
 
             expect(repoSpy.save).toHaveBeenCalledWith(new Round(THROW.ROCK, THROW.ROCK, RESULT.DRAW));
         })
     })
 
+    describe('history', () => {
+        it('calls no rounds when repo is empty', () => {
+            request = new Request({isEmpty: () => true});
+            const observer = jasmine.createSpyObj('observer', ['noRounds']);
+
+
+            request.getHistory(observer)
+
+
+            expect(observer.noRounds).toHaveBeenCalled();
+        })
+
+        it('calls rounds when repo is not empty', () => {
+            const round = new Round(THROW.ROCK, THROW.ROCK, RESULT.DRAW)
+            request = new Request({isEmpty: () => false, get: () => [round]});
+            const observer = jasmine.createSpyObj('observer', ['rounds']);
+
+
+            request.getHistory(observer)
+
+
+            expect(observer.rounds).toHaveBeenCalledWith([round]);
+        })
+    })
+
     describe('win scenarios', () => {
         beforeEach(() => {
-            request = new Request({save: () => {}});
+            request = new Request({
+                save: () => {
+                }
+            });
         })
 
         it('rock v.s. scissors', () => {
-            const observer = jasmine.createSpyObj("observer", ["p1Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p1Wins']);
 
             request.play(THROW.ROCK, THROW.SCISSORS, observer)
 
@@ -42,7 +79,7 @@ describe('play function', () => {
         })
 
         it('scissors v.s. rock', () => {
-            const observer = jasmine.createSpyObj("observer", ["p2Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p2Wins']);
 
             request.play(THROW.SCISSORS, THROW.ROCK, observer)
 
@@ -50,7 +87,7 @@ describe('play function', () => {
         })
 
         it('paper v.s. rock', () => {
-            const observer = jasmine.createSpyObj("observer", ["p1Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p1Wins']);
 
             request.play(THROW.PAPER, THROW.ROCK, observer)
 
@@ -58,7 +95,7 @@ describe('play function', () => {
         })
 
         it('rock v.s. paper', () => {
-            const observer = jasmine.createSpyObj("observer", ["p2Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p2Wins']);
 
             request.play(THROW.ROCK, THROW.PAPER, observer)
 
@@ -66,7 +103,7 @@ describe('play function', () => {
         })
 
         it('scissors v.s. paper', () => {
-            const observer = jasmine.createSpyObj("observer", ["p1Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p1Wins']);
 
             request.play(THROW.SCISSORS, THROW.PAPER, observer)
 
@@ -74,7 +111,7 @@ describe('play function', () => {
         })
 
         it('paper v.s. scissors', () => {
-            const observer = jasmine.createSpyObj("observer", ["p2Wins"]);
+            const observer = jasmine.createSpyObj('observer', ['p2Wins']);
 
             request.play(THROW.PAPER, THROW.SCISSORS, observer)
 
@@ -84,11 +121,14 @@ describe('play function', () => {
 
     describe('draw scenarios', () => {
         beforeEach(() => {
-            request = new Request({save: () => {}});
+            request = new Request({
+                save: () => {
+                }
+            });
         })
 
         it('rock v.s. rock', () => {
-            const observer = jasmine.createSpyObj("observer", ["draw"]);
+            const observer = jasmine.createSpyObj('observer', ['draw']);
 
             request.play(THROW.ROCK, THROW.ROCK, observer)
 
@@ -96,7 +136,7 @@ describe('play function', () => {
         })
 
         it('paper v.s. paper', () => {
-            const observer = jasmine.createSpyObj("observer", ["draw"]);
+            const observer = jasmine.createSpyObj('observer', ['draw']);
 
             request.play(THROW.PAPER, THROW.PAPER, observer)
 
@@ -104,7 +144,7 @@ describe('play function', () => {
         })
 
         it('scissors v.s. scissors', () => {
-            const observer = jasmine.createSpyObj("observer", ["draw"]);
+            const observer = jasmine.createSpyObj('observer', ['draw']);
 
             request.play(THROW.SCISSORS, THROW.SCISSORS, observer)
 
@@ -118,7 +158,7 @@ describe('play function', () => {
         })
 
         it('null v.s. null', () => {
-            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+            const observer = jasmine.createSpyObj('observer', ['invalid']);
 
             request.play(null, null, observer)
 
@@ -126,7 +166,7 @@ describe('play function', () => {
         })
 
         it('null v.s. invalid', () => {
-            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+            const observer = jasmine.createSpyObj('observer', ['invalid']);
 
             request.play(null, Math.random(), observer)
 
@@ -134,7 +174,7 @@ describe('play function', () => {
         })
 
         it('invalid v.s. null', () => {
-            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+            const observer = jasmine.createSpyObj('observer', ['invalid']);
 
             request.play(Math.random(), null, observer)
 
@@ -142,7 +182,7 @@ describe('play function', () => {
         })
 
         it('invalid v.s. invalid', () => {
-            const observer = jasmine.createSpyObj("observer", ["invalid"]);
+            const observer = jasmine.createSpyObj('observer', ['invalid']);
 
             request.play(Math.random(), Math.random(), observer)
 
