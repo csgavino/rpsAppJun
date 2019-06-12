@@ -39,6 +39,10 @@ export default class PlayForm extends React.Component {
             this)
     }
 
+    onHistoryClick() {
+        this.props.repo.get()
+    }
+
     onChangePlayer1Input(event) {
         this.setState({
             player1Input: event.target.value
@@ -60,8 +64,11 @@ export default class PlayForm extends React.Component {
                        onChange={this.onChangePlayer1Input.bind(this)}/>
                 <input name='player2'
                        onChange={this.onChangePlayer2Input.bind(this)}/>
-                <button onClick={this.onClickSubmit.bind(this)}>登録</button>
+                <button name="play" onClick={this.onClickSubmit.bind(this)}>登録</button>
                 <div>{this.state.result}</div>
+                <div>
+                    <button name="history" onClick={this.onHistoryClick.bind(this)}>History</button>
+                </div>
             </div>
         )
     }
