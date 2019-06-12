@@ -4,7 +4,8 @@ export default class PlayForm extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            result: null
+            result: null,
+            rounds: null,
         }
     }
 
@@ -39,10 +40,6 @@ export default class PlayForm extends React.Component {
             this)
     }
 
-    onHistoryClick() {
-        this.props.repo.get()
-    }
-
     onChangePlayer1Input(event) {
         this.setState({
             player1Input: event.target.value
@@ -53,6 +50,24 @@ export default class PlayForm extends React.Component {
         this.setState({
             player2Input: event.target.value
         });
+    }
+
+    onHistoryClick() {
+        this.props.request.getHistory(this)
+    }
+
+    noRounds() {
+        this.setState({rounds: []})
+    }
+
+    displayRounds() {
+        if (this.state.rounds === null) {
+            return
+        }
+
+        if(this.state.rounds.length === 0) {
+            return <p>no rounds played</p>
+        }
     }
 
     render() {
@@ -68,6 +83,8 @@ export default class PlayForm extends React.Component {
                 <div>{this.state.result}</div>
                 <div>
                     <button name="history" onClick={this.onHistoryClick.bind(this)}>History</button>
+                    <br/>
+                    {this.displayRounds()}
                 </div>
             </div>
         )

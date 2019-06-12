@@ -130,11 +130,11 @@ describe('WebSpec', function () {
 
         describe("history", () => {
             it("calls request get method when history button clicked", () => {
-                let repoSpy = jasmine.createSpyObj('repo', ['get']);
+                let requestSpy = jasmine.createSpyObj('request', ['getHistory']);
 
 
                 ReactDOM.render(
-                    <PlayForm repo={repoSpy}/>,
+                    <PlayForm request={requestSpy}/>,
                     domFixture
                 );
                 document
@@ -142,7 +142,36 @@ describe('WebSpec', function () {
                     .click();
 
 
-                expect(repoSpy.get).toHaveBeenCalled()
+                expect(requestSpy.getHistory).toHaveBeenCalledWith(jasmine.any(Object))
+            });
+
+
+            it("no message is displayed before history button is clicked", () => {
+                ReactDOM.render(<PlayForm />, domFixture);
+
+
+                expect(domFixture.innerText).not.toContain('No Rounds')
+            });
+
+
+            it("no rounds is displayed when no rounds played", () => {
+                const requestStub = {
+                    getHistory: (observer) => {
+                        observer.noRounds()
+                    }
+                }
+
+
+                ReactDOM.render(
+                    <PlayForm request={requestStub}/>,
+                    domFixture
+                );
+                document
+                    .querySelector('button[name="history"]')
+                    .click();
+
+
+                expect(domFixture.innerText).toContain('no rounds played')
             });
         })
     })
