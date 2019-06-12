@@ -1,16 +1,16 @@
-const FakeRoundRepository  = require('../src/FakeRoundRepository')
+const InMemoryRoundRepository  = require('../src/InMemoryRoundRepository')
 const {Round} = require('../src/play')
 
 describe('fake repo', () => {
     describe("when empty", () => {
         it("is empty is true", () => {
-            const repo = new FakeRoundRepository();
+            const repo = new InMemoryRoundRepository();
 
             expect(repo.isEmpty()).toBe(true);
         })
 
         it("get rounds is empty", () => {
-            const repo = new FakeRoundRepository();
+            const repo = new InMemoryRoundRepository();
 
             expect(repo.get()).toEqual([]);
         })
@@ -18,7 +18,7 @@ describe('fake repo', () => {
 
     describe("when rounds available", () => {
         it("is empty is false", () => {
-            const repo = new FakeRoundRepository();
+            const repo = new InMemoryRoundRepository();
 
             repo.save(new Round('rock', 'paper', 'p2Wins'))
 
@@ -26,7 +26,7 @@ describe('fake repo', () => {
         })
 
         it("when rounds, get returns rounds", () => {
-            const repo = new FakeRoundRepository();
+            const repo = new InMemoryRoundRepository();
             const round = new Round('rock', 'paper', 'p2Wins')
 
             repo.save(round)
@@ -35,7 +35,7 @@ describe('fake repo', () => {
         })
 
         it("returns copy of rounds", () => {
-            const repo = new FakeRoundRepository();
+            const repo = new InMemoryRoundRepository();
             const round = new Round('rock', 'paper', 'p2Wins')
 
             repo.save(round)

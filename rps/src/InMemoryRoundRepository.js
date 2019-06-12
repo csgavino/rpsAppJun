@@ -1,4 +1,4 @@
-class FakeRoundRepository {
+class InMemoryRoundRepository {
     constructor() {
         this.rounds = []
     }
@@ -16,4 +16,4 @@ class FakeRoundRepository {
     }
 }
 
-module.exports = FakeRoundRepository;
+module.exports = InMemoryRoundRepository;
